@@ -46,6 +46,8 @@ dependencies {
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
 
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation "com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0"
 }
 
 tasks.named('test') {
