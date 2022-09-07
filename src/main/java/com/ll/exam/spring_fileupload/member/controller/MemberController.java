@@ -3,6 +3,7 @@ package com.ll.exam.spring_fileupload.member.controller;
 import com.ll.exam.spring_fileupload.member.entity.Member;
 import com.ll.exam.spring_fileupload.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpSession;
 public class MemberController {
 
     private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/join")
     public String showJoin() {
@@ -30,8 +32,10 @@ public class MemberController {
         if(memberService.existsByUsername(username) == true) {
             return "이미 가입된 회원입니다";
         }
+        String passwordClearText = password;
+        password = passwordEncoder.encode(password);
 
-        Member member = memberService.join(username, "{noop}"+password, email, profileImg);
+        Member member = memberService.join(username, password, email, profileImg);
 
         httpSession.setAttribute("loginMemberId", member.getId());
 
