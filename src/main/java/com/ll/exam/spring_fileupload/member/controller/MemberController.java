@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/member")
@@ -24,13 +26,28 @@ public class MemberController {
 
     @PostMapping("/join")
     @ResponseBody
-    public String join(String username, String password, String email, MultipartFile profileImg) {
+    public String join(String username, String password, String email, MultipartFile profileImg, HttpSession httpSession) {
         if(memberService.existsByUsername(username) == true) {
             return "이미 가입된 회원입니다";
         }
 
-        Member member = memberService.join(username, password, email, profileImg);
+        Member member = memberService.join(username, "{noop}"+password, email, profileImg);
 
-        return "가입완료";
+        httpSession.setAttribute("loginMemberId", member.getId());
+
+        return "redirect:/member/profile";
     }
+
+    @GetMapping("/profile")
+    public String showProfile(HttpSession httpSession) {
+        Long memberId = (Long) httpSession.getAttribute("loginMemberId");
+
+        boolean isLogined = (memberId != null);
+
+        if(isLogined == false)
+            return "redirect:/?errorMsg=Need to login!";
+
+        return "/member/profile";
+    }
+
 }
