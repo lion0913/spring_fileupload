@@ -34,4 +34,3 @@ public class MemberController {
         return "가입완료";
     }
 }
-
