@@ -48,4 +48,8 @@ public class MemberService {
     public boolean existsByUsername(String username) {
         return memberRepository.existsByUsername(username);
     }
+
+    public Member getMemberById(Long id) {
+        return memberRepository.findById(id).orElse(null);
+    }
 }
