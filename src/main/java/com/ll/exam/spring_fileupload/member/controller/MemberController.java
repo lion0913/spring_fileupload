@@ -3,6 +3,7 @@ package com.ll.exam.spring_fileupload.member.controller;
 import com.ll.exam.spring_fileupload.member.entity.Member;
 import com.ll.exam.spring_fileupload.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,7 +32,7 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public String join(String username, String password, String email, MultipartFile profileImg, HttpSession httpSession) {
+    public String join(HttpServletRequest req, String username, String password, String email, MultipartFile profileImg, HttpSession httpSession) {
         if(memberService.existsByUsername(username) == true) {
             return "이미 가입된 회원입니다";
         }
@@ -37,21 +41,20 @@ public class MemberController {
 
         Member member = memberService.join(username, password, email, profileImg);
 
-        httpSession.setAttribute("loginMemberId", member.getId());
+//        httpSession.setAttribute("loginMemberId", member.getId());
+        try {
+            req.login(username, passwordClearText);
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
+        }
 
         return "redirect:/member/profile";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
-    public String showProfile(HttpSession httpSession, Model model) {
-        Long memberId = (Long) httpSession.getAttribute("loginMemberId");
-
-        boolean isLogined = (memberId != null);
-
-        if(isLogined == false)
-            return "redirect:/?errorMsg=Need to login!";
-
-        Member loginedMember = memberService.getMemberById(memberId);
+    public String showProfile(Principal principal, Model model) {
+        Member loginedMember = memberService.getMemberByUsername(principal.getName());
 
         model.addAttribute("loginedMember", loginedMember);
         return "member/profile";
