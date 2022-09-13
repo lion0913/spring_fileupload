@@ -21,13 +21,9 @@ public class SecurityConfig {
                 .permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/user/login")
-                .defaultSuccessUrl("/")
-                .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-                .logoutSuccessUrl("/")
-                .invalidateHttpSession(true);
+                .loginPage("/member/login") // GET
+                .loginProcessingUrl("/member/login"); // POST
+
         return http.build();
     }
 

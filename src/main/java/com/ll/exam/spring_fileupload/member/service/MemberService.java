@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,24 +29,26 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     public Member join(String username, String password, String email, MultipartFile profileImg) {
-        String profilePath = null;
-        if(profileImg.isEmpty() == false) {
-            profilePath = "member/" + username + ".png";
-            File imgFile = new File("%s/%s".formatted(genFileDirPath, profilePath));
 
-            imgFile.mkdirs();
-            try {
-                profileImg.transferTo(imgFile);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        String profileImgDirName = "member";
+        String fileName = UUID.randomUUID().toString() + ".png";
+        String profileImgDirPath = genFileDirPath + "/" + profileImgDirName;
+        String profileImgFilePath = profileImgDirPath + "/" + fileName;
+
+        try {
+            profileImg.transferTo(new File(profileImgFilePath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+        String profileImgRelPath = profileImgDirName + "/" + fileName;
+
 
         Member member = Member.builder()
                 .username(username)
                 .password(password)
                 .email(email)
-                .imgPath(profilePath)
+                .imgPath(profileImgRelPath)
                 .build();
 
         memberRepository.save(member);
@@ -86,5 +89,16 @@ public class MemberService implements UserDetailsService {
 
     public long count() {
         return memberRepository.count();
+    }
+
+    public Member findById(Long id) {
+        return memberRepository.findById(id).orElse(null);
+    }
+
+    public void removeProfileImg(Member member) {
+        member.removeProfileImgOnStorage(member);
+        member.setImgPath(null);
+
+        memberRepository.save(member);
     }
 }

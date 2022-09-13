@@ -1,8 +1,10 @@
 package com.ll.exam.spring_fileupload.member.entity;
 
+import com.ll.exam.spring_fileupload.base.AppConfig;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.File;
 
 @Getter
 @Setter
@@ -27,4 +29,16 @@ public class Member {
 
     @Column
     private String imgPath;
+
+    public void removeProfileImgOnStorage(Member member) {
+        if(imgPath == null || imgPath.trim().length() == 0) return;
+
+        String profileImgPath = getProfileImgPath();
+
+        new File(profileImgPath).delete();
+    }
+
+    private String getProfileImgPath() {
+        return AppConfig.GET_FILE_DIR_PATH +"/"+imgPath;
+    }
 }
