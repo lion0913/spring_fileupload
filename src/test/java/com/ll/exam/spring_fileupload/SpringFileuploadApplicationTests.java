@@ -145,7 +145,7 @@ class SpringFileuploadApplicationTests {
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/member/profile"))
 				.andExpect(handler().handlerType(MemberController.class))
-				.andExpect(handler().methodName("join"));
+				.andExpect(handler().methodName("showMain"));
 
 		Member member = memberService.findById(5L);
 

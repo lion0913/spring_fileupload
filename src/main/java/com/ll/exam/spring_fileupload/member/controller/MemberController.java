@@ -68,4 +68,9 @@ public class MemberController {
         return "member/profile";
     }
 
+    @GetMapping("/about")
+    public String showAbout(Principal principal, Model model) {
+        return "/home/about";
+    }
+
 }
