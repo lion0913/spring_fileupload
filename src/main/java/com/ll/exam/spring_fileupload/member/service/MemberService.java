@@ -2,6 +2,7 @@ package com.ll.exam.spring_fileupload.member.service;
 
 import com.ll.exam.spring_fileupload.member.entity.Member;
 import com.ll.exam.spring_fileupload.member.repository.MemberRepository;
+import com.ll.exam.spring_fileupload.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,8 +31,12 @@ public class MemberService implements UserDetailsService {
 
     public Member join(String username, String password, String email, MultipartFile profileImg) {
 
-        String profileImgDirName = "member";
-        String fileName = UUID.randomUUID().toString() + ".png";
+        String profileImgDirName = "member/" + Util.date.getCurrentDateFormatted("yyyy_MM_dd");
+
+        String ext = Util.file.getExt(profileImg.getOriginalFilename());
+
+        String fileName = UUID.randomUUID() + "." + ext;
+
         String profileImgDirPath = genFileDirPath + "/" + profileImgDirName;
         String profileImgFilePath = profileImgDirPath + "/" + fileName;
 
@@ -75,6 +80,10 @@ public class MemberService implements UserDetailsService {
         return memberRepository.findByUsername(username).orElse(null);
     }
 
+    private String getCurrentProfileImgDirName() {
+        return "member/"+ Util.date.getCurrentDateFormatted("yyyy_MM_dd");
+    }
+
     public Member join(String username, String password, String email) {
         Member member = Member.builder()
                 .username(username)
@@ -87,18 +96,6 @@ public class MemberService implements UserDetailsService {
         return member;
     }
 
-    public Member join(String username, String password, String email, String imgPath) {
-        Member member = Member.builder()
-                .username(username)
-                .password(password)
-                .email(email)
-                .imgPath(imgPath)
-                .build();
-
-        memberRepository.save(member);
-
-        return member;
-    }
 
     public long count() {
         return memberRepository.count();
@@ -111,6 +108,13 @@ public class MemberService implements UserDetailsService {
     public void removeProfileImg(Member member) {
         member.removeProfileImgOnStorage(member);
         member.setImgPath(null);
+
+        memberRepository.save(member);
+    }
+
+    public void setProfileImgByUrl(Member member, String url) {
+        String filePath = Util.file.downloadImg(url, genFileDirPath+getCurrentProfileImgDirName()+"/"+UUID.randomUUID());
+        member.setImgPath("member/"+new File(filePath).getName());
 
         memberRepository.save(member);
     }

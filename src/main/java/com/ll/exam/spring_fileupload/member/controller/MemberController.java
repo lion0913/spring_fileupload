@@ -26,17 +26,19 @@ public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
-
+    @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
     public String showLogin() {
         return "member/login";
     }
 
+    @PreAuthorize("isAnonymous()")
     @GetMapping("/join")
     public String showJoin() {
         return "member/join";
     }
 
+    @PreAuthorize("isAnonymous()")
     @PostMapping("/join")
     public String join(HttpServletRequest req, String username, String password, String email, MultipartFile profileImg, HttpSession httpSession) {
         if(memberService.existsByUsername(username) == true) {
