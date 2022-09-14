@@ -18,12 +18,12 @@ public class SecurityConfig {
                 .csrf(
                         csrf -> csrf.disable()
                 )
-                .authorizeRequests(
+                .authorizeRequests( //인가
                         authorizeRequests -> authorizeRequests
                                 .antMatchers("/**")
                                 .permitAll()
                 )
-                .formLogin(
+                .formLogin( //스프링부트에서 기본적으로 제공하는 로그인 페이지를 커스텀하기 위해 사용
                         formLogin -> formLogin
                                 .loginPage("/member/login") // GET
                                 .loginProcessingUrl("/member/login") // POST
