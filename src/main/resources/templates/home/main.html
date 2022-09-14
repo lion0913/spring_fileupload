@@ -1,8 +1,23 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}">
 
-<header th:if="${loginedMember != null}">
-    user3 / <img th:src="@{${loginedUrl}}" alt="">
+<head>
+<title>메인</title>
+</head>
 
-    <div th:text="@{${loginedUrl}}"></div>
-</header>
+<body>
+<section layout:fragment="content">
 
-<hr>
+    <div class="container">
+        <header th:if="${loginedMember != null}">
+            user3 / <img th:src="@{${loginedUrl}}" alt="">
+        </header>
+
+        <hr>
+
+        <div>안녕</div>
+    </div>
+
+</section>
+</body>
+</html>
