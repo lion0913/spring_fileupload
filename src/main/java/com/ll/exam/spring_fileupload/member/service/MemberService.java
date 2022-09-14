@@ -113,8 +113,8 @@ public class MemberService implements UserDetailsService {
     }
 
     public void setProfileImgByUrl(Member member, String url) {
-        String filePath = Util.file.downloadImg(url, genFileDirPath+getCurrentProfileImgDirName()+"/"+UUID.randomUUID());
-        member.setImgPath("member/"+new File(filePath).getName());
+        String filePath = Util.file.downloadImg(url, genFileDirPath+"/"+getCurrentProfileImgDirName()+"/"+UUID.randomUUID());
+        member.setImgPath(getCurrentProfileImgDirName() + "/" + new File(filePath).getName());
 
         memberRepository.save(member);
     }

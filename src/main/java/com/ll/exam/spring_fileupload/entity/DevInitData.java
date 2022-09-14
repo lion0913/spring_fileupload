@@ -18,9 +18,9 @@ public class DevInitData {
         return args -> {
             String password = passwordEncoder.encode("1234");
             Member member1 = memberService.join("1", password, "user1@test.com");
-            memberService.setProfileImgByUrl(member1, "https://picsum.photos/200/300");
+            memberService.setProfileImgByUrl(member1, "https://i.picsum.photos/id/454/200/300.jpg?hmac=wGXBDB3HURz2isRdLrgggeWdD1yO3rdX4B3-jlzRncg");
             Member member2 = memberService.join("2", password, "user2@test.com");
-            memberService.setProfileImgByUrl(member2, "https://picsum.photos/200/300");
+            memberService.setProfileImgByUrl(member2, "https://i.picsum.photos/id/779/200/300.jpg?hmac=DmFN06G0c1N5TAbj2O9YljZ0Vr8VWOZ4lPjLG8oAf8o");
         };
     }
 }
