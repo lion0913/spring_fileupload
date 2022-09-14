@@ -64,7 +64,7 @@ public class MemberController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
-    public String showProfile(@AuthenticationPrincipal MemberContext memberContext) {
+    public String showProfile() {
 
         return "member/profile";
     }
