@@ -69,7 +69,7 @@ public class MemberController {
     }
 
     @GetMapping("/about")
-    public String showAbout(Principal principal, Model model) {
+    public String showAbout() {
         return "/home/about";
     }
 

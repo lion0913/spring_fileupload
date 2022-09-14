@@ -21,20 +21,7 @@ public class HomeController {
     final MemberService memberService;
 
     @GetMapping("/")
-    public String main(Principal principal, Model model) {
-        Member loginedMember = null;
-        String loginedMemberProfileImgUrl = null;
-
-        if (principal != null && principal.getName() != null) {
-            loginedMember = memberService.getMemberByUsername(principal.getName());
-        }
-
-        if(loginedMember != null) {
-            loginedMemberProfileImgUrl = loginedMember.getProfileImgPath();
-        }
-
-        model.addAttribute("loginedMember", loginedMember);
-        model.addAttribute("loginedUrl", loginedMemberProfileImgUrl);
+    public String main() {
         return "home/main";
     }
 
