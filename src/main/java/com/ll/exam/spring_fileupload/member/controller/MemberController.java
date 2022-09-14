@@ -73,4 +73,11 @@ public class MemberController {
         return "/home/about";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/currentUser")
+    @ResponseBody
+    public Principal currentUser(Principal principal) {
+        return principal;
+    }
+
 }
