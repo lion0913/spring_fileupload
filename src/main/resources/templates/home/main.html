@@ -1,4 +1,8 @@
-<div>안녕</div>
-<div>
-    [[${param.errorMsg}]]
-</div>
+
+<header th:if="${loginedMember != null}">
+    user3 / <img th:src="@{${loginedUrl}}" alt="">
+
+    <div th:text="@{${loginedUrl}}"></div>
+</header>
+
+<hr>

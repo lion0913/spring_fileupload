@@ -38,7 +38,7 @@ public class Member {
         new File(profileImgPath).delete();
     }
 
-    private String getProfileImgPath() {
-        return AppConfig.GET_FILE_DIR_PATH +"/"+imgPath;
+    public String getProfileImgPath() {
+        return "/gen/"+imgPath;
     }
 }
