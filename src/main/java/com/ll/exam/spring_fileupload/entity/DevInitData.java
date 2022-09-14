@@ -16,8 +16,8 @@ public class DevInitData {
     CommandLineRunner init(MemberService memberService, PasswordEncoder passwordEncoder) {
         return args -> {
             String password = passwordEncoder.encode("1234");
-            memberService.join("user1", password, "user1@test.com");
-            memberService.join("user2", password, "user2@test.com");
+            memberService.join("1", password, "user1@test.com", "member/4.png");
+            memberService.join("2", password, "user2@test.com","member/5.png");
         };
     }
 }
