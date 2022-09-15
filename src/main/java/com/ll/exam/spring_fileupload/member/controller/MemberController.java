@@ -4,6 +4,11 @@ import com.ll.exam.spring_fileupload.member.entity.Member;
 import com.ll.exam.spring_fileupload.member.service.MemberService;
 import com.ll.exam.spring_fileupload.security.dto.MemberContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.Principal;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequiredArgsConstructor
@@ -86,7 +94,11 @@ public class MemberController {
     }
 
     @GetMapping("/profile/img/{id}")
-    public String showProfileImg(@PathVariable Long id) {
-        return "redirect:" + memberService.findById(id).getProfileImgPath();
+    public ResponseEntity<Object> showProfileImg(@PathVariable Long id) throws URISyntaxException {
+        URI redirectUri = new URI(memberService.findById(id).getProfileImgPath());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(redirectUri);
+        httpHeaders.setCacheControl(CacheControl.maxAge(60, TimeUnit.SECONDS));
+        return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
     }
 }
