@@ -4,8 +4,10 @@ package com.ll.exam.spring_fileupload.security.service;
 import com.ll.exam.spring_fileupload.member.entity.Member;
 import com.ll.exam.spring_fileupload.member.exception.MemberNotFoundException;
 import com.ll.exam.spring_fileupload.member.repository.MemberRepository;
+import com.ll.exam.spring_fileupload.member.service.MemberService;
 import com.ll.exam.spring_fileupload.security.dto.MemberContext;
 import com.ll.exam.spring_fileupload.security.exception.OAuthTypeMatchNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,9 +25,13 @@ import java.util.*;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class OAuth2UserService extends DefaultOAuth2UserService {
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private MemberService memberService;
 
     @Override
     @Transactional
@@ -48,10 +54,12 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         if (isNew(oauthType, oauthId)) {
             switch (oauthType) {
                 case "KAKAO" -> {
+                    log.debug("attributes : " + attributes);
+
                     Map attributesProperties = (Map) attributes.get("properties");
                     Map attributesKakaoAcount = (Map) attributes.get("kakao_account");
                     String nickname = (String) attributesProperties.get("nickname");
-                    String picture = (String) attributesProperties.get("picture");
+                    String profile_image = (String) attributesProperties.get("profile_image");
 
                     String email = "%s@kakao.com".formatted(oauthId);
                     String username = "KAKAO_%s".formatted(oauthId);
@@ -67,10 +75,12 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
                             .email(email)
                             .username(username)
                             .password("")
-                            .imgPath(picture)
                             .build();
 
+
                     memberRepository.save(member);
+
+                    memberService.setProfileImgByUrl(member, profile_image);
                 }
             }
         } else {
