@@ -21,9 +21,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Principal;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 @Controller
@@ -101,4 +104,25 @@ public class MemberController {
         httpHeaders.setCacheControl(CacheControl.maxAge(60, TimeUnit.SECONDS));
         return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
     }
+
+    @GetMapping("/modify")
+    @PreAuthorize("isAuthenticated()")
+    public String getModify(Principal principal) {
+        return "/member/modify";
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify")
+    public String modify(@AuthenticationPrincipal MemberContext context, String email, MultipartFile profileImg, String profileImg__delete) {
+        Member member = memberService.findById(context.getId());
+
+        if(profileImg__delete != null && profileImg__delete.equals("Y")) {
+            memberService.removeProfileImg(member);
+        }
+        memberService.modify(member, email, profileImg);
+
+        return "redirect:/member/profile";
+    }
+
 }

@@ -29,16 +29,16 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public Member join(String username, String password, String email, MultipartFile profileImg) {
-
-        String profileImgDirName = "member/" + Util.date.getCurrentDateFormatted("yyyy_MM_dd");
+    private String saveProfileImg(MultipartFile profileImg) {
+        String profileImgDirName = getCurrentProfileImgDirName();
 
         String ext = Util.file.getExt(profileImg.getOriginalFilename());
 
         String fileName = UUID.randomUUID() + "." + ext;
-
         String profileImgDirPath = genFileDirPath + "/" + profileImgDirName;
         String profileImgFilePath = profileImgDirPath + "/" + fileName;
+
+        new File(profileImgDirPath).mkdirs(); // 폴더가 혹시나 없다면 만들어준다.
 
         try {
             profileImg.transferTo(new File(profileImgFilePath));
@@ -46,8 +46,11 @@ public class MemberService {
             throw new RuntimeException(e);
         }
 
-        String profileImgRelPath = profileImgDirName + "/" + fileName;
+        return profileImgDirName + "/" + fileName;
+    }
 
+    public Member join(String username, String password, String email, MultipartFile profileImg) {
+        String profileImgRelPath = saveProfileImg(profileImg);
 
         Member member = Member.builder()
                 .username(username)
@@ -96,7 +99,7 @@ public class MemberService {
     }
 
     public void removeProfileImg(Member member) {
-        member.removeProfileImgOnStorage(member);
+        member.removeProfileImgOnStorage();
         member.setImgPath(null);
 
         memberRepository.save(member);
@@ -106,6 +109,17 @@ public class MemberService {
         String filePath = Util.file.downloadImg(url, genFileDirPath+"/"+getCurrentProfileImgDirName()+"/"+UUID.randomUUID());
         member.setImgPath(getCurrentProfileImgDirName() + "/" + new File(filePath).getName());
 
+        memberRepository.save(member);
+    }
+
+
+
+    public void modify(Member member, String email, MultipartFile profileImg) {
+        removeProfileImg(member);
+
+        String profileImgRelPath = saveProfileImg(profileImg);
+        member.setEmail(email);
+        member.setImgPath(profileImgRelPath);
         memberRepository.save(member);
     }
 }

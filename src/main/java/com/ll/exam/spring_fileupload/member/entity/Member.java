@@ -30,12 +30,16 @@ public class Member {
     @Column
     private String imgPath;
 
-    public void removeProfileImgOnStorage(Member member) {
+    public void removeProfileImgOnStorage() {
         if(imgPath == null || imgPath.trim().length() == 0) return;
 
-        String profileImgPath = getProfileImgPath();
+        String profileImgPath = getImgPath();
 
         new File(profileImgPath).delete();
+    }
+
+    private String getImgPath() {
+        return AppConfig.GET_FILE_DIR_PATH + "/" + imgPath;
     }
 
     public String getProfileImgPath() {
