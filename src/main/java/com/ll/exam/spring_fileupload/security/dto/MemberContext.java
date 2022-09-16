@@ -3,10 +3,12 @@ package com.ll.exam.spring_fileupload.security.dto;
 
 import com.ll.exam.spring_fileupload.member.entity.Member;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,11 +25,15 @@ public class MemberContext extends User implements OAuth2User {
     private Map<String, Object> attributes;
     private String userNameAttributeName;
 
+    @Setter
+    private LocalDateTime modifyDate;
+
 
     public MemberContext(Member member, List<GrantedAuthority> authorities) {
         super(member.getUsername(), member.getPassword(), authorities);
         this.id = member.getId();
         this.profileImgUrl = member.getProfileImgPath();
+        this.modifyDate = member.getModifyDate();
         this.email = member.getEmail();
     }
 
@@ -53,6 +59,6 @@ public class MemberContext extends User implements OAuth2User {
     }
 
     public String getProfileImgRedirectUrl() {
-        return "/member/profile/img/" + getId() + "?random=" + UUID.randomUUID();
+        return "/member/profile/img/" + getId() + "?cacheKey=" + getModifyDate().toString();
     }
 }

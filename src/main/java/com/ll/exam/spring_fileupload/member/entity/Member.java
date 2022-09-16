@@ -1,7 +1,9 @@
 package com.ll.exam.spring_fileupload.member.entity;
 
 import com.ll.exam.spring_fileupload.base.AppConfig;
+import com.ll.exam.spring_fileupload.entity.BaseEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.io.File;
@@ -10,9 +12,9 @@ import java.io.File;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
