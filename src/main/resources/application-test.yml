@@ -1,8 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:mariadb://127.0.0.1:3306/file_test?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
-    username: dajunglocal
-    password: dajung1234
-  jpa:
-    hibernate:
-      ddl-auto: none
