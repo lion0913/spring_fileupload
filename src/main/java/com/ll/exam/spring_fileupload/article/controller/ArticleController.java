@@ -3,6 +3,8 @@ package com.ll.exam.spring_fileupload.article.controller;
 import com.ll.exam.spring_fileupload.article.dto.ArticleForm;
 import com.ll.exam.spring_fileupload.article.entity.Article;
 import com.ll.exam.spring_fileupload.article.service.ArticleService;
+import com.ll.exam.spring_fileupload.base.dto.ResultData;
+import com.ll.exam.spring_fileupload.fileUpload.entity.GenFile;
 import com.ll.exam.spring_fileupload.fileUpload.service.GenFileService;
 import com.ll.exam.spring_fileupload.security.dto.MemberContext;
 
@@ -51,7 +53,10 @@ public class ArticleController {
 //        log.debug("fileMap : " + fileMap);
         Article article = articleService.write(memberContext.getId(), articleForm.getSubject(), articleForm.getContent());
 
-        genFileService.saveFiles(article, fileMap);
+        ResultData<Map<String, GenFile>> saveFilesRsData = genFileService.saveFiles(article, fileMap);
+
+        log.debug("saveFilesRsData : " + saveFilesRsData);
+
 
         return "작업중";
     }
