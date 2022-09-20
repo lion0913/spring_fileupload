@@ -3,6 +3,7 @@ package com.ll.exam.spring_fileupload.article.controller;
 import com.ll.exam.spring_fileupload.article.dto.ArticleForm;
 import com.ll.exam.spring_fileupload.article.entity.Article;
 import com.ll.exam.spring_fileupload.article.service.ArticleService;
+import com.ll.exam.spring_fileupload.fileUpload.service.GenFileService;
 import com.ll.exam.spring_fileupload.security.dto.MemberContext;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,8 @@ import java.util.Map;
 public class ArticleController {
     private final ArticleService articleService;
 
+    private final GenFileService genFileService;
+
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/write")
@@ -45,8 +48,10 @@ public class ArticleController {
 
         Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
 
-        log.debug("fileMap : " + fileMap);
+//        log.debug("fileMap : " + fileMap);
         Article article = articleService.write(memberContext.getId(), articleForm.getSubject(), articleForm.getContent());
+
+        genFileService.saveFiles(article, fileMap);
 
         return "작업중";
     }
