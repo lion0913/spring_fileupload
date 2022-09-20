@@ -14,11 +14,12 @@ import java.io.File;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
+@ToString(callSuper = true)
 public class Member extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Column(unique=true)
     private String username;
@@ -46,5 +47,9 @@ public class Member extends BaseEntity {
 
     public String getProfileImgPath() {
         return "/gen/"+imgPath;
+    }
+
+    public Member(long id) {
+        super(id);
     }
 }
