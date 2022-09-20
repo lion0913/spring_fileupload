@@ -8,16 +8,15 @@ import com.ll.exam.spring_fileupload.fileUpload.entity.GenFile;
 import com.ll.exam.spring_fileupload.fileUpload.service.GenFileService;
 import com.ll.exam.spring_fileupload.security.dto.MemberContext;
 
+import com.ll.exam.spring_fileupload.util.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
@@ -58,7 +57,17 @@ public class ArticleController {
         log.debug("saveFilesRsData : " + saveFilesRsData);
 
 
-        return "작업중";
+        String msg = "%d번 게시물이 작성되었습니다.".formatted(article.getId());
+        msg = Util.url.encode(msg);
+        return "redirect:/article/%d?msg=%s".formatted(article.getId(), msg);
+    }
+
+    @GetMapping("/{id}")
+    public String showDetail(Model model, @PathVariable Long id) {
+        Article article = articleService.getArticleById(id);
+        model.addAttribute("article", article);
+
+        return "article/detail";
     }
 
 }
