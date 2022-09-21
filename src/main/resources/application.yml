@@ -38,4 +38,4 @@ custom:
   genFileDirPath: /Users/dajung/dev/lion/temp/file-upload
 logging:
   level:
-    com.ll.exam.app10.app: debug
+    com.ll.exam.spring_fileupload: debug

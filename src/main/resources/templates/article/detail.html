@@ -10,6 +10,9 @@
     <div class="container">
         <h1>글 상세페이지</h1>
 
+        <div th:each="path:${pathList}">
+            <div th:text="*{path}"></div>
+        </div>
         [[${article}]]
     </div>
 </section>

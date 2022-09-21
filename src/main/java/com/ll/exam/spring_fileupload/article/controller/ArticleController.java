@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -49,7 +50,7 @@ public class ArticleController {
 
         Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
 
-//        log.debug("fileMap : " + fileMap);
+        log.debug("fileMap : " + fileMap);
         Article article = articleService.write(memberContext.getId(), articleForm.getSubject(), articleForm.getContent());
 
         ResultData<Map<String, GenFile>> saveFilesRsData = genFileService.saveFiles(article, fileMap);
@@ -65,7 +66,11 @@ public class ArticleController {
     @GetMapping("/{id}")
     public String showDetail(Model model, @PathVariable Long id) {
         Article article = articleService.getArticleById(id);
+        List<String> genFileList = genFileService.imgPathByRelId(id);
+
+
         model.addAttribute("article", article);
+        model.addAttribute("pathList", genFileList);
 
         return "article/detail";
     }
