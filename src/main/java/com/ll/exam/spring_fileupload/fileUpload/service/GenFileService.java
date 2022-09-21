@@ -145,13 +145,15 @@ public class GenFileService {
     }
 
     public Map<String, GenFile> getRelGenFileMap(Article article) {
-        List<GenFile> genFiles = genFileRepository.findByRelTypeCodeAndRelId("article", article.getId());
+        List<GenFile> genFiles = genFileRepository.findByRelTypeCodeAndRelIdOrderByTypeCodeAscType2CodeAscFileNoAsc("article", article.getId());
 
         return genFiles
                 .stream()
                 .collect(Collectors.toMap(
                         genFile -> genFile.getTypeCode() + "__" + genFile.getType2Code() + "__" + genFile.getFileNo(),
-                        genFile -> genFile
+                        genFile -> genFile,
+                        (genFile1, genFile2) -> genFile1,
+                        LinkedHashMap::new
                 ));
     }
 }
