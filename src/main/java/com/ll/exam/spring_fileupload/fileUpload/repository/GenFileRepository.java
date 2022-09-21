@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface GenFileRepository extends JpaRepository<GenFile, Long> {
     List<GenFile> findByRelId(Long id);
+
+    List<GenFile> findByRelTypeCodeAndRelId(String article, Long id);
 }

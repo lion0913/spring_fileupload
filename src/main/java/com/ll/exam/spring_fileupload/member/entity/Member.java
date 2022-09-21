@@ -1,5 +1,6 @@
 package com.ll.exam.spring_fileupload.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ll.exam.spring_fileupload.base.AppConfig;
 import com.ll.exam.spring_fileupload.entity.BaseEntity;
 import lombok.*;
@@ -25,6 +26,7 @@ public class Member extends BaseEntity {
     private String username;
 
     @Column
+    @JsonIgnore
     private String password;
 
     @Column

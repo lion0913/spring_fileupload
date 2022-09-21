@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -141,5 +142,16 @@ public class GenFileService {
         }
 
         return imgPath;
+    }
+
+    public Map<String, GenFile> getRelGenFileMap(Article article) {
+        List<GenFile> genFiles = genFileRepository.findByRelTypeCodeAndRelId("article", article.getId());
+
+        return genFiles
+                .stream()
+                .collect(Collectors.toMap(
+                        genFile -> genFile.getTypeCode() + "__" + genFile.getType2Code() + "__" + genFile.getFileNo(),
+                        genFile -> genFile
+                ));
     }
 }
