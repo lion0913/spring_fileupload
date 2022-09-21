@@ -61,4 +61,8 @@ public class MemberContext extends User implements OAuth2User {
     public String getProfileImgRedirectUrl() {
         return "/member/profile/img/" + getId() + "?cacheKey=" + getModifyDate().toString();
     }
+
+    public boolean memberIs(Member member) {
+        return id.equals(member.getId());
+    }
 }

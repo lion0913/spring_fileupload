@@ -12,27 +12,22 @@
 
         <script>
             function WriteForm__submit(form) {
-                form.username.value = form.username.value.trim();
+                form.subject.value = form.subject.value.trim();
 
-                if (form.username.value.length == 0) {
-                    alert("아이디를 입력해주세요.");
-                    form.username.focus();
+                if (form.subject.value.length == 0) {
+                    alert("제목을 입력해주세요.");
+                    form.subject.focus();
                     return;
                 }
 
-                form.password.value = form.password.value.trim();
 
-                if (form.password.value.length == 0) {
-                    alert("비밀번호를 입력해주세요.");
-                    form.password.focus();
-                    return;
-                }
+                form.content.value = form.content.value.trim();
 
-                form.email.value = form.email.value.trim();
+                form.content.value = form.content.value.trim();
 
-                if (form.email.value.length == 0) {
+                if (form.content.value.length == 0) {
                     alert("이메일을 입력해주세요.");
-                    form.email.focus();
+                    form.content.focus();
                     return;
                 }
 
