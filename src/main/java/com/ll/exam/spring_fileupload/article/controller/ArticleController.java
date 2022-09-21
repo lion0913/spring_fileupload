@@ -42,7 +42,6 @@ public class ArticleController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/write")
-    @ResponseBody
     public String write(@AuthenticationPrincipal MemberContext memberContext, @Valid ArticleForm articleForm, MultipartRequest multipartRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "article/write";
@@ -65,12 +64,10 @@ public class ArticleController {
 
     @GetMapping("/{id}")
     public String showDetail(Model model, @PathVariable Long id) {
-        Article article = articleService.getArticleById(id);
-        List<String> genFileList = genFileService.imgPathByRelId(id);
+        Article article = articleService.getForPrintArticleById(id);
 
 
         model.addAttribute("article", article);
-        model.addAttribute("pathList", genFileList);
 
         return "article/detail";
     }
