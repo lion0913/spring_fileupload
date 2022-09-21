@@ -44,10 +44,7 @@ public class ArticleController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/write")
-    public String write(@AuthenticationPrincipal MemberContext memberContext, @Valid ArticleForm articleForm, MultipartRequest multipartRequest, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "article/write";
-        }
+    public String write(@AuthenticationPrincipal MemberContext memberContext, @Valid ArticleForm articleForm, MultipartRequest multipartRequest) {
 
         Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
 
@@ -88,13 +85,19 @@ public class ArticleController {
         return "article/modify";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/{id}/modify")
-    public String modify(@AuthenticationPrincipal MemberContext memberContext, Model model, @PathVariable Long id, @Valid ArticleForm articleForm) {
+    public String modify(@AuthenticationPrincipal MemberContext memberContext, Model model, @PathVariable Long id, @Valid ArticleForm articleForm, MultipartRequest multipartRequest) {
         Article article = articleService.getForPrintArticleById(id);
 
         if (memberContext.memberIs(article.getAuthor()) == false) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
+
+
+        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+
+        ResultData<Map<String, GenFile>> saveFilesRsData = genFileService.saveFiles(article, fileMap);
 
         articleService.modify(article, articleForm.getSubject(), articleForm.getContent());
         String msg = Util.url.encode("%d번 게시물이 수정되었습니다.".formatted(id));
