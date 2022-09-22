@@ -24,13 +24,15 @@ public class DevInitData {
             Member member2 = memberService.join("2", password, "user2@test.com");
             memberService.setProfileImgByUrl(member2, "https://i.picsum.photos/id/779/200/300.jpg?hmac=DmFN06G0c1N5TAbj2O9YljZ0Vr8VWOZ4lPjLG8oAf8o");
 
-            Article article1 = articleService.write(member1, "제목1", "내용1");
+//            Article article1 = articleService.write(member1, "제목1", "내용1");
+            Article article1 = articleService.write(member1, "제목1", "내용1", "#자바 #프로그래밍");
             articleService.addGenFileByUrl(article1, "common", "inBody", 1, "https://picsum.photos/200/300");
             articleService.addGenFileByUrl(article1, "common", "inBody", 2, "https://picsum.photos/200/300");
             articleService.addGenFileByUrl(article1, "common", "inBody", 3, "https://picsum.photos/200/300");
             articleService.addGenFileByUrl(article1, "common", "inBody", 4, "https://picsum.photos/200/300");
 
-            Article article2 = articleService.write(member1, "제목2", "내용2");
+//            Article article2 = articleService.write(member1, "제목2", "내용2");
+            Article article2 = articleService.write(member1, "제목1", "내용1", "#HTML #프로그래밍");
             articleService.addGenFileByUrl(article2, "common", "inBody", 1, "https://picsum.photos/200/300");
             articleService.addGenFileByUrl(article2, "common", "inBody", 2, "https://picsum.photos/200/300");
         };
