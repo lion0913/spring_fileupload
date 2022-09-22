@@ -24,7 +24,7 @@ public class TestInitData {
             Member member4 = memberService.join("user4", password, "user4@test.com");
 
             Article article1 = articleService.write(member1, "제목1", "내용1", "#자바 #프로그래밍");
-            Article article2 = articleService.write(member1, "제목2", "내용2", "#HTML #프로그래밍");
+            Article article2 = articleService.write(member1, "제목2", "내용2", "#HTML #고기");
         };
     }
 }
