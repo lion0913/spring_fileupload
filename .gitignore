@@ -37,4 +37,5 @@ out/
 .vscode/
 
 application-base-addi.yml
+application-test.yml
 spy.log
