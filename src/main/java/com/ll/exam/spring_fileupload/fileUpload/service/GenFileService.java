@@ -181,4 +181,42 @@ public class GenFileService {
     private void deleteFileFromStorage(GenFile genFile) {
         new File(genFile.getFilePath()).delete();
     }
+
+    public void deleteFiles(Article article, Map<String, String> params) {
+        List<String> deleteFilesArgs = params.keySet()
+                .stream()
+                .filter(key -> key.startsWith("delete___"))
+                .map(key -> key.replace("delete___", ""))
+                .collect(Collectors.toList());
+
+        deleteFiles(article, deleteFilesArgs);
+    }
+
+    public void deleteFiles(Article article, List<String> params) {
+        params
+                .stream()
+                .forEach(key -> {
+                    String[] keyBits = key.split("__");
+                    String relTypeCode = "article";
+                    Long relId = article.getId();
+                    String typeCode = keyBits[0];
+                    String type2Code = keyBits[1];
+                    int fileNo = Integer.parseInt(keyBits[2]);
+
+                    Optional<GenFile> optGenFile = genFileRepository.findByRelTypeCodeAndRelIdAndTypeCodeAndType2CodeAndFileNo(relTypeCode, relId, typeCode, type2Code, fileNo);
+
+                    if(optGenFile.isPresent()) {
+                        delete(optGenFile.get());
+                    }
+                });
+    }
+
+    public void delete(GenFile genFile) {
+        //실제 파일 삭제
+        deleteFileFromStorage(genFile);
+
+        genFileRepository.delete(genFile);
+    }
+
+
 }
