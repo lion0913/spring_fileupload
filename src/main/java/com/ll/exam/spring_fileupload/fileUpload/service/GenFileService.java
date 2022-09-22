@@ -218,5 +218,7 @@ public class GenFileService {
         genFileRepository.delete(genFile);
     }
 
-
+    public Optional<GenFile> findById(Long id) {
+        return genFileRepository.findById(id);
+    }
 }

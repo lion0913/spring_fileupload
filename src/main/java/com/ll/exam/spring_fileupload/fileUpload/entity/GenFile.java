@@ -53,4 +53,9 @@ public class GenFile extends BaseEntity {
     public String getFilePath() {
         return AppConfig.GET_FILE_DIR_PATH + "/" + getFileDir() + "/" + getFileName();
     }
+
+    public String getDownloadUrl() {
+        return "/download/gen/" + getId();
+    }
+
 }
