@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@ActiveProfiles({"base-addi", "test"})
+@ActiveProfiles("test")
 class SpringFileuploadApplicationTests {
 
 	@Autowired
@@ -76,7 +76,7 @@ class SpringFileuploadApplicationTests {
 		ResultActions resultActions = mvc
 				.perform(
 						get("/member/profile")
-								.with(user("user1").password("1234").roles("user"))
+								.with(user("1").password("1234").roles("user"))
 				)
 				.andDo(print());
 
@@ -97,7 +97,7 @@ class SpringFileuploadApplicationTests {
 		ResultActions resultActions = mvc
 				.perform(
 						get("/member/profile")
-								.with(user("user1").password("1234").roles("user"))
+								.with(user("1").password("1234").roles("user"))
 				)
 				.andDo(print());
 

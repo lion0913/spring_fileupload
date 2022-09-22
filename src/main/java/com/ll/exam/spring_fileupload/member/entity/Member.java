@@ -2,7 +2,7 @@ package com.ll.exam.spring_fileupload.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ll.exam.spring_fileupload.base.AppConfig;
-import com.ll.exam.spring_fileupload.entity.BaseEntity;
+import com.ll.exam.spring_fileupload.base.entity.BaseEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

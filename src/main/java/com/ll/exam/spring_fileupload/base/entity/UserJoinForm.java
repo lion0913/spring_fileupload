@@ -1,4 +1,4 @@
-package com.ll.exam.spring_fileupload.entity;
+package com.ll.exam.spring_fileupload.base.entity;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;

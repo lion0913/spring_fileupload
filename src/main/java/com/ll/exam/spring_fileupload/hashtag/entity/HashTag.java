@@ -1,7 +1,8 @@
-package com.ll.exam.spring_fileupload.article.entity;
+package com.ll.exam.spring_fileupload.hashtag.entity;
 
+import com.ll.exam.spring_fileupload.article.entity.Article;
 import com.ll.exam.spring_fileupload.base.entity.BaseEntity;
-import com.ll.exam.spring_fileupload.member.entity.Member;
+import com.ll.exam.spring_fileupload.keyword.entity.Keyword;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -15,12 +16,10 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @SuperBuilder
 @ToString(callSuper = true)
-public class Article extends BaseEntity {
+public class HashTag extends BaseEntity {
     @ManyToOne
-    private Member author;
+    private Article article;
 
-    private String subject;
-
-    private String content;
-
+    @ManyToOne
+    private Keyword keyword;
 }
