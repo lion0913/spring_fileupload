@@ -49,7 +49,7 @@ public class ArticleController {
         Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
 
         log.debug("fileMap : " + fileMap);
-        Article article = articleService.write(memberContext.getId(), articleForm.getSubject(), articleForm.getContent());
+        Article article = articleService.write(memberContext.getId(), articleForm.getSubject(), articleForm.getContent(), articleForm.getHashTagContents());
 
         ResultData<Map<String, GenFile>> saveFilesRsData = genFileService.saveFiles(article, fileMap);
 
@@ -105,7 +105,7 @@ public class ArticleController {
         genFileService.deleteFiles(article, params);
         ResultData<Map<String, GenFile>> saveFilesRsData = genFileService.saveFiles(article, fileMap);
 
-        articleService.modify(article, articleForm.getSubject(), articleForm.getContent());
+        articleService.modify(article, articleForm.getSubject(), articleForm.getContent(), articleForm.getHashTagContents());
         String msg = Util.url.encode("%d번 게시물이 수정되었습니다.".formatted(id));
         return "redirect:/article/%d?msg=%s".formatted(id, msg);
     }
