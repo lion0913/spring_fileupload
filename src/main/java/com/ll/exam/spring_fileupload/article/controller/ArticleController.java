@@ -36,6 +36,15 @@ public class ArticleController {
     private final GenFileService genFileService;
 
 
+    @GetMapping("/list")
+    public String getList(@RequestParam(required = false) String kwType, @RequestParam(required = false) String kw, Model model) {
+        List<Article> articles = articleService.listByCriteria(kwType, kw);
+
+        model.addAttribute("articles", articles);
+        return "article/list";
+    }
+
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/write")
     public String showWrite() {

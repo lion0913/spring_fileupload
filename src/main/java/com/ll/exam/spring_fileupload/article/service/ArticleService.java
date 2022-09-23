@@ -80,4 +80,8 @@ public class ArticleService {
 
         hashTagService.applyHashTags(article, hashTagContents);
     }
+
+    public List<Article> listByCriteria(String kwType, String kw) {
+        return articleRepository.listByCriteria(kwType, kw);
+    }
 }
